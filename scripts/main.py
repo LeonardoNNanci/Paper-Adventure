@@ -14,21 +14,25 @@ fundo = GameImage("../sprites/background.png")
 hud = HUD(janela)
 hud.setup()
 
-plataforma = Plataforma(janela)
-plataforma.setup()
+plataforma1 = Plataforma(janela, 0)
+plataforma1.setup(0, 13)
+
+plataforma2 = Plataforma(janela, 1)
+plataforma2.setup(15, 10)
 
 itens = []
 for i in range(4):
     itens.append(Item(i, janela))
     itens[i].setup()
-
+    
 jogador = Player(janela)
 jogador.setup()
 
 while True:
     fundo.draw()
     hud.atualizar()
-    plataforma.atualizar()
+    plataforma1.atualizar()
+    plataforma2.atualizar()
     for i in range(4):
         itens[i].atualizar()
     jogador.atualizar()
