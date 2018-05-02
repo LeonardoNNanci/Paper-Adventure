@@ -15,7 +15,9 @@ class HUD(Sprite):
         HUD.icone_dist = Sprite("../sprites/icone_seta.png")
         HUD.icone_dist.set_position(115, HUD.janela.height * 1.15 / 14)
 
-    def atualizar(self):
+    def atualizar(self, playing):
+        # if playing:
+            # HUD.dist += 1
         HUD.icone_dist.draw()
         HUD.icone_lapis.draw()
         HUD.janela.draw_text(str(HUD.lapis), 175, -7, size = 45, font_name = "Comic Sans MS", bold = True)

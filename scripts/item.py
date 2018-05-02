@@ -28,5 +28,7 @@ class Item(Sprite):
         elif(self.id == 3):
             self.set_position(475, Item.janela.height * 11.6 / 14)
 
-    def atualizar(self):
+    def atualizar(self, playing):
+        # if playing:
+            # mover
         self.draw()
