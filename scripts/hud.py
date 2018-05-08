@@ -19,8 +19,8 @@ class HUD():
     # Desenha o que é necessario na tela
     def atualizar(self, playing):
         # if playing:
-        #     HUD.count_dist = 1/(HUD.janela.delta_time() + 0.0000001)
+        #   pass
         HUD.icone_dist.draw()
         HUD.icone_lapis.draw()
         HUD.janela.draw_text(str(HUD.count_lapis), 175, -7, size = 45, font_name = "Comic Sans MS", bold = True)
-        HUD.janela.draw_text(str(HUD.count_dist), 175, HUD.janela.height * 0.9 / 14, size = 45, font_name = "Comic Sans MS", bold = True)
+        HUD.janela.draw_text(str(int(HUD.count_dist)), 175, HUD.janela.height * 0.9 / 14, size = 45, font_name = "Comic Sans MS", bold = True)

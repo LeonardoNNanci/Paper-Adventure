@@ -13,10 +13,10 @@ playing = True
 
 # Define as configurações da janela
 janela = Window(1280, 630)
-# janela = Window(1, 1) <------ Isso aqui é só uma gambiarra minha. Liga não
+# janela = Window(1, 1) #<------ Isso aqui é só uma gambiarra minha. Liga não
 janela.set_background_color((255,255,255))
 janela.set_title("Paper Adventure!")
-fundo = GameImage("../sprites/background.png")
+fundo = GameImage("../sprites/background.jpg")
 
 # Define atributos da main usados nas classes
 Item.janela = Player.janela = Menu.janela = HUD.janela = janela
@@ -26,11 +26,11 @@ Menu.mouse = janela.get_mouse()
 # Objetos base
 # Vou ver se vale mais a pena copiar esses objetos ou criar objetos novos
 # a cada vez que aparece um novo item / plataforma
-lapis = Item("../sprites/lapis.png")
-caneta = Item("../sprites/caneta.png")
-borracha = Item("../sprites/borracha.png")
-cafe = Item("../sprites/cafe.png")
-plataforma = Item("../sprites/plataforma.png")
+lapis = Material("../sprites/lapis.png")
+caneta = Material("../sprites/caneta.png")
+borracha = Material("../sprites/borracha.png")
+cafe = Material("../sprites/cafe.png")
+plataforma = Item("../sprites/plataforma.jpg")
 pontilhada = Item("../sprites/plataforma_pontilhada.png") # Plataforma pontilhada funciona como normal, por enquanto
 
 # Lista de armazenamento
@@ -57,24 +57,24 @@ for i in range(4): # Configura cada plataforma e cada item
     itens[i].setup(i, i * 2)
 
 # Game Loop
+# Chama funções das classes para atualizar os objetos
 while True:
     fundo.draw()
-    # Chama funções das classes para atualizar os objetos
+
     # Atualiza o hud (classe HUD)
     hud.atualizar(playing)
     # Atualiza cada plataforma (classe Item)
-    for i in range(len(plataformas)):
-        plataformas[i].atualizar(playing)
+    for plataforma in plataformas:
+        plataforma.atualizar(playing)
     # Atualiza cada item (classe Item)
-    for i in range(len(itens)):
-        itens[i].atualizar(playing)
+    for item in itens:
+        item.atualizar(playing)
     # Atualiza o Stickman (classe Player)
     jogador.atualizar(plataformas, itens, playing)
 
     # Se pressionar ESC
     if teclado.key_pressed("ESC"):
         playing = False
-
     # Se o jogo estiver pausado
     if not playing:
         # Chama o menu

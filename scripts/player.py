@@ -1,6 +1,4 @@
 from PPlay.sprite import *
-from PPlay.collision import *
-janela = teclado = True
 
 class Player():
     # Objetos (Sprites) auxiliares
@@ -13,7 +11,7 @@ class Player():
 
     # Inicicializa classe e declara objetos auxiliares
     def __init__(self):
-        Player.controler = Sprite("../sprites/empty.png")
+        Player.controler = Sprite("../sprites/empty.jpg")
         Player.corrida = Sprite("../sprites/run-cycle.png", 19)
         Player.pulo = Sprite("../sprites/jump.png")
 
@@ -28,16 +26,25 @@ class Player():
 
         # Define o tamanho e a posicao iniciais do controlador de colisoes
         Player.controler.height, Player.controler.width = 10, Player.cur_sprt.width
-        Player.controler.set_position(Player.cur_sprt.x, Player.cur_sprt.y + Player.cur_sprt.height-13)
+        Player.controler.set_position(Player.cur_sprt.x, Player.cur_sprt.y + Player.cur_sprt.height - 10)
 
         # Define a duração de um loop da animação de corrida (em milissegundos)
         Player.corrida.set_total_duration(500)
 
+    # Controle de colisao com plataformas
+    def colisao_plataforma(plataforma):
+        # Se se estiver horizontalmente "longe" do jogador já retorna False
+        if plataforma.x <= Player.cur_sprt.x + Player.cur_sprt.width:
+            # Se estiver horizontalmente "perto" e tocar na plataforma retorna True
+            if (plataforma.y <= Player.controler.y + Player.controler.height <= plataforma.y + plataforma.height + Player.controler.height) and (plataforma.x + plataforma.width >= Player.cur_sprt.x):
+                return True
+        return False
+
     # Controle de movimentação do personagem
-    def mover(self, plataformas):
+    def mover(plataformas):
         # Testa colisão com cada plataforma
         for i in range(len(plataformas)):
-            teste_colisao = Collision.collided(Player.controler, plataformas[i])
+            teste_colisao = Player.colisao_plataforma(plataformas[i])
             if teste_colisao:
                 # Se colidir e estiver caindo
                 if Player.y_vel > 0:
@@ -68,7 +75,7 @@ class Player():
         # Se usuário pressionar Barra de Espaço
         if Player.teclado.key_pressed("SPACE"):
             # Se estiver correndo e pressionar Barra de Espaço
-            if Player.y_vel == 0:
+            if teste_colisao and Player.y_vel == 0:
                 # Atualiza velocidade, funcionando como um "impulso" para cima
                 # Quanto mais alto na tela, menor o "impulso"
                 Player.y_vel = -(Player.janela.height - (Player.y_init - Player.cur_sprt.y - Player.cur_sprt.height))
@@ -91,7 +98,10 @@ class Player():
                 Player.gravidade = Player.janela.height / 5
         # Enquanto não pressionar Barra de Espaço, graviade constante
         else:
-            Player.gravidade = 2000
+            if Player.y_vel < 0:
+                Player.gravidade = 4000
+            else:
+                Player.gravidade = 2000
 
         # Move o sprite atual e o controlador de colisão
         # de acordo com a velocidade e a aceleração
@@ -110,7 +120,7 @@ class Player():
     def atualizar(self, plataformas, itens, playing):
         # Se não estiver pausado
         if playing:
-            Player.mover(self, plataformas)
+            Player.mover(plataformas)
             Player.corrida.update()
         Player.controle_morte()
         Player.cur_sprt.draw()

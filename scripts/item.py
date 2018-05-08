@@ -30,3 +30,11 @@ class Item(Sprite):
         if playing:
             Item.mover(self)
         self.draw()
+
+##############################################################################
+class Material(Item):
+    def __init__(self, img_file):
+        Item.__init__(self, img_file)
+
+    def setup(self, pos_x, pos_y):
+        self.set_position(Item.janela.width * pos_x / 2, (Item.janela.height * (13 - pos_y) / 14) - self.height)
