@@ -48,13 +48,15 @@ plataformas.append(copy(plataforma)) # Adiciona uma plataforma à lista
 plataformas.append(copy(pontilhada)) # Adiciona uma plataforma  pontilhada à lista
 plataformas.append(copy(plataforma))
 plataformas.append(copy(pontilhada))
+plataformas.append(copy(plataforma))
 
 # Configura os objetos
 hud.setup()
 jogador.setup()
-for i in range(4): # Configura cada plataforma e cada item
-    plataformas[i].setup(i, i * 2)
+for i in range(4): # Configura cada item
     itens[i].setup(i, i * 2)
+for j in range(5): # Configura cada plataforma
+    plataformas[j].setup(j, j * 2)
 
 # Game Loop
 # Chama funções das classes para atualizar os objetos

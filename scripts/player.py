@@ -7,7 +7,7 @@ class Player():
     # Objetos da main
     janela = teclado = True
     # Variáveis de controle na movimentação
-    y_vel, gravidade, y_init = 0, 2000, 0
+    y_vel, gravidade, y_init, y_saida = 0, 2000, 0, 0
 
     # Inicicializa classe e declara objetos auxiliares
     def __init__(self):
@@ -84,6 +84,7 @@ class Player():
                 Player.cur_sprt = Player.pulo
                 Player.cur_sprt.set_position(x, y)
                 print("Pula") # Print para debug
+                Player.y_saida = y # Ajuda no controle de altura do pulo
 
             # Se estiver subindo e pressionar Barra de Espaço
             if Player.y_vel < 0:
@@ -96,12 +97,15 @@ class Player():
                 # Diminui força da gravidade
                 # Controle de intensidade da queda
                 Player.gravidade = Player.janela.height / 5
-        # Enquanto não pressionar Barra de Espaço, graviade constante
+        # Enquanto não pressionar Barra de Espaço
         else:
+            # Se estiver subindo
             if Player.y_vel < 0:
-                Player.gravidade = 4000
+                # Gravidade muda de acordo com a posição do inicio do pulo
+                Player.gravidade = Player.janela.height * 6.4 / (Player.janela.height / Player.y_saida)
+            # Se estiver descendo
             else:
-                Player.gravidade = 2000
+                Player.gravidade = Player.janela.height * 3.2
 
         # Move o sprite atual e o controlador de colisão
         # de acordo com a velocidade e a aceleração
