@@ -3,7 +3,7 @@ from PPlay.gameimage import *
 from PPlay.sprite import *
 from player import *
 from hud import *
-from item import *
+from movel import *
 from menu import *
 from copy import *
 
@@ -19,44 +19,22 @@ janela.set_title("Paper Adventure!")
 fundo = GameImage("../sprites/background.jpg")
 
 # Define atributos da main usados nas classes
-Item.janela = Player.janela = Menu.janela = HUD.janela = janela
+Movel.janela = Player.janela = Menu.janela = HUD.janela = janela
 Player.teclado = teclado = janela.get_keyboard()
 Menu.mouse = janela.get_mouse()
 
-# Objetos base
-# Vou ver se vale mais a pena copiar esses objetos ou criar objetos novos
-# a cada vez que aparece um novo item / plataforma
-lapis = Material("../sprites/lapis.png")
-caneta = Material("../sprites/caneta.png")
-borracha = Material("../sprites/borracha.png")
-cafe = Material("../sprites/cafe.png")
-plataforma = Item("../sprites/plataforma.jpg")
-pontilhada = Item("../sprites/plataforma_pontilhada.png") # Plataforma pontilhada funciona como normal, por enquanto
-
 # Lista de armazenamento
-plataformas, itens = [], []
+itens = ["lapis", "borracha", "caneta", "cafe"]
+plataformas = ["plataforma.jpg", "plataforma_pontilhada.png", "plataforma.jpg", "plataforma_pontilhada.png"]
 
-# Define objetos do jogo chamando com as propriedades de cada classe
+# Define objetos do jogo
 hud = HUD()
 menu = Menu()
 jogador = Player()
-itens.append(copy(lapis)) # Adiciona um lápis à lista de itens
-itens.append(copy(caneta)) # Adiciona uma caneta à lista de itens
-itens.append(copy(borracha)) # Adiciona uma borracha à lista de itens
-itens.append(copy(cafe)) # Adiciona um cafe à lista de itens
-plataformas.append(copy(plataforma)) # Adiciona uma plataforma à lista
-plataformas.append(copy(pontilhada)) # Adiciona uma plataforma  pontilhada à lista
-plataformas.append(copy(plataforma))
-plataformas.append(copy(pontilhada))
-plataformas.append(copy(plataforma))
-
-# Configura os objetos
-hud.setup()
-jogador.setup()
-for i in range(4): # Configura cada item
-    itens[i].setup(i, i * 2)
-for j in range(5): # Configura cada plataforma
-    plataformas[j].setup(j, j * 2)
+for i in range(4):
+    plataformas[i] = Plataforma(i, i * 2)
+    itens[i] = Item(itens[i], i, i * 2)
+plataformas.append(Plataforma(4, 8))
 
 # Game Loop
 # Chama funções das classes para atualizar os objetos
@@ -74,12 +52,10 @@ while True:
     # Atualiza o Stickman (classe Player)
     jogador.atualizar(plataformas, itens, playing)
 
-    # Se pressionar ESC
-    if teclado.key_pressed("ESC"):
-        playing = False
-    # Se o jogo estiver pausado
-    if not playing:
-        # Chama o menu
-        playing = Menu.atualizar()
+    # Se pressionar ESC ou o jogo estiver pausado
+    if teclado.key_pressed("ESC") or not playing:
+        playing = menu.atualizar()
 
     janela.update()
+    if janela.time_elapsed() % 100 == 0:
+        print(1/janela.delta_time())
