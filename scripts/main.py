@@ -57,5 +57,3 @@ while True:
         playing = menu.atualizar()
 
     janela.update()
-    if janela.time_elapsed() % 100 == 0:
-        print(1/janela.delta_time())
