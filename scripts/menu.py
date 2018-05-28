@@ -1,4 +1,5 @@
 from PPlay.sprite import *
+from PPlay.gameimage import *
 
 class Menu():
     # Objetos da main
@@ -11,7 +12,7 @@ class Menu():
         # Variavel auxiliar
         self.hover_b4 = False
 
-        self.alpha = Sprite("../sprites/alpha.png")
+        self.alpha = GameImage("../sprites/alpha.png")
         self.papel = Sprite("../sprites/post-it.png")
         self.botoes.append(Sprite("../sprites/resume.png")) # Adiciona os botoes à lista
         self.botoes.append(Sprite("../sprites/sair.png")) # Adiciona os botoes à lista
