@@ -57,12 +57,11 @@ class Borracha(Item):
     def efeito(self, jogador):
         if not jogador.invulneravel and self.ativo:
             # Se não tiver lápis sufucientes
-            if HUD.count_lapis < 10:
+            HUD.count_lapis -= HUD.count_dist // 3
+            self.ativo = False
+            if HUD.count_lapis < 0:
                 print("Morte por: Borracha")
                 sys.exit()
-            else:
-                HUD.count_lapis -= 10
-                self.ativo = False
 
     def mover(self):
         # Se estiver na extremidade esquerda
@@ -85,5 +84,30 @@ class Borracha(Item):
         else:
             return False
 
-class Pontilhada(Item):
-    pass
+class Pontilhada(Plataforma):
+    max_width = 174
+    jogador = None
+
+    def __init__(self, pos_y, width = max_width):
+        Plataforma.__init__(self, pos_y, img_file = "../sprites/pontilhada.png", width = width)
+        self.collided = False
+        self.y_vel = 0
+        self.timer = 0
+
+    def mover(self):
+        self.x -= Movel.x_vel * Movel.janela.delta_time()
+        if self.collided and self.timer > 0:
+            if Movel.janela.time_elapsed() - self.timer > 300:
+                self.y_vel += 2000 * Movel.janela.delta_time()
+                self.y += self.y_vel * Movel.janela.delta_time()
+
+    # Controle de colisão
+    def colisao(self, obj):
+        if obj.x - self.width <= self.x <= obj.x + obj.width:
+            if (self.y <= obj.y + obj.height <= self.y + self.height + obj.height) and Pontilhada.jogador.y_vel >= 0:
+                if self.collided == False:
+                    self.timer = Movel.janela.time_elapsed()
+                    self.collided = True
+                return True
+        else:
+            return False

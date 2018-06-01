@@ -26,8 +26,9 @@ class Player():
         self.cur_sprt.set_position(110, self.y_init)
 
         # Define o tamanho e a posicao iniciais do controlador de colisoes
-        self.controler.height, self.controler.width = 10, self.cur_sprt.width
-        self.controler.set_position(self.cur_sprt.x, self.cur_sprt.y + self.cur_sprt.height - 10)
+        self.controler.height, self.controler.width = 10, self.cur_sprt.width * 7 / 10
+        self.controler.set_position(self.cur_sprt.x + (self.cur_sprt.width - self.controler.width) / 2
+                                    , self.cur_sprt.y + self.cur_sprt.height - 10)
 
         # Define a duração de um loop da animação de corrida (em milissegundos)
         self.corrida.set_total_duration(500)
@@ -76,7 +77,6 @@ class Player():
             else:
                 # Cai
                 if self.y_vel == 0:
-                    pass
                     # Define pulo como o sprite atual
                     if self.invulneravel:
                         self.trocar_sprite(self.pulo_blue)
@@ -139,4 +139,4 @@ class Player():
         self.cur_sprt.draw()
         # Descomenta o comando de baixo pra ver o controler e entender melhor
         # Se quiser
-        # Player.controler.draw()
+        # self.controler.draw()

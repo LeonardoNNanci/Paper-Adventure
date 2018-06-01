@@ -8,12 +8,17 @@ from itens import *
 from random import randint
 
 ########### Funções Auxiliares ##############################################
-def criar_objs(plataformas, itens, timer):
+def criar_objs(plataformas, itens, timer, playing):
 
     # Testa o intervalo entre a criação dos objetos
-    if janela.time_elapsed() - timer >= 1500:
-        # Cria uma plataforma nova
-        plataformas.append(Plataforma(randint(0, 4), width = randint(janela.width / 5, janela.width / 2)))
+    if janela.time_elapsed() - timer >= 1500 and playing:
+        aux = randint(0, 5)
+        if aux < 3:
+            # Cria uma plataforma nova
+            plataformas.append(Pontilhada(randint(0, 4), width = 175))
+        else:
+            # Cria uma plataforma nova
+            plataformas.append(Plataforma(randint(0, 4), width = randint(janela.width / 5, janela.width / 2)))
         # Calcula a quantidade de itens na plataforma
         qtd_itens = int(plataformas[-1].width / 88)
         plt = plataformas[-1]
@@ -25,7 +30,7 @@ def criar_objs(plataformas, itens, timer):
                 itens.append(Cafe(plt.x + 88 * i, plt.y))
             elif aux < 2: # 1% de chance de aparecer uma caneta
                 itens.append(Caneta(plt.x + 88 * i, plt.y))
-            if aux < 30 and i == 0: # 28% de chance de aparecer uma borracha (se for borracha, vai ser o único item na plataforma)
+            elif aux < 30 and i == 0: # 28% de chance de aparecer uma borracha (se for borracha, vai ser o único item na plataforma)
                 itens.append(Borracha(plt.x + 88 * i, plt.y, plt))
                 break
             elif aux < 75: # 45% de chance de aparecer um lápis
@@ -42,13 +47,13 @@ def atualizar_plataformas(lista):
     for i in range(len(lista) - 1, -1, -1):
         lista[i].atualizar(jogador, playing)
         # Se estiver fora da tela, deixa de existir
-        if lista[i].x < -lista[i].width:
+        if lista[i].x < -lista[i].width or lista[i].y > janela.height:
             lista.pop(i)
 
 # Atualiza cada item
 def atualizar_itens(lista):
     for j in range(len(lista) -1, -1, -1):
-        # Atualiza e checa se teve colisão com o jogador
+        # Atualiza e checa se teve colisão com o jogadorz
         if lista[j].atualizar(jogador, playing):
             # Ativa o efeito do item
             lista[j].efeito(jogador)
@@ -83,7 +88,7 @@ itens, plataformas = [], []
 # Define objetos do jogo
 hud = HUD()
 menu = Menu()
-jogador = Player()
+Pontilhada.jogador = jogador = Player()
 plataformas.append(Plataforma(0, 0))
 itens.append(Borracha(0, 0, plataformas[0]))
 itens.append(Cafe(1, 2))
@@ -114,5 +119,9 @@ while True:
 
     janela.update()
 
+    print("###")
+    print(1/janela.delta_time())
+    print("Itens:", str(len(itens)))
+    print("Plataformas:", str(len(plataformas)))
     # Controle de criação de novos objetos
-    timer = criar_objs(plataformas, itens, timer)
+    timer = criar_objs(plataformas, itens, timer, playing)

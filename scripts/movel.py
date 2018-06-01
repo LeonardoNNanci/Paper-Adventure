@@ -48,8 +48,8 @@ class Item(Movel):
 class Plataforma(Movel):
     max_width = 1280
 
-    def __init__(self, pos_y, pos_x = max_width, width = max_width):
-        Movel.__init__(self, "../sprites/plataforma.jpg")
+    def __init__(self, pos_y, pos_x = max_width, img_file = "../sprites/plataforma.jpg", width = max_width):
+        Movel.__init__(self, img_file)
         self.set_position(pos_x, (Movel.janela.height * (13 - pos_y * 2) / 14)) # Plataforma.janela.width
         self.width = width
 
@@ -57,7 +57,7 @@ class Plataforma(Movel):
     def atualizar(self, jogador, playing):
         # Se o jogo não estiver pausado
         if playing:
-            Movel.mover(self)
+            self.mover()
         if self.colisao(jogador.controler) and jogador.colisao == False:
             jogador.colisao = True
         self.draw()
