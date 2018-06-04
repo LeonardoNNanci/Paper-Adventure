@@ -29,7 +29,6 @@ class Menu():
                 self.botoes[0] = Sprite("../sprites/resume_hover.png")
                 self.botoes[0].set_position((Menu.janela.width - self.botoes[0].width) / 2 - 20, (Menu.janela.height - self.botoes[0].height) / 3)
                 self.hover_b4 = True
-                print(self.hover_b4)
             # Se clicar no botão:
             if Menu.mouse.is_button_pressed(1):
                 return True
@@ -41,7 +40,6 @@ class Menu():
                 self.botoes[1] = Sprite("../sprites/sair_hover.png")
                 self.botoes[1].set_position((Menu.janela.width - self.botoes[1].width) / 2, (Menu.janela.height - self.botoes[1].height) * 2 / 3)
                 self.hover_b4 = True
-                print(self.hover_b4)
             # Se clicar no botão:
             if Menu.mouse.is_button_pressed(1):
                 sys.exit() # Fecha o jogo
@@ -54,7 +52,6 @@ class Menu():
                 self.botoes[0].set_position((Menu.janela.width - self.botoes[0].width) / 2 - 20, (Menu.janela.height - self.botoes[0].height) / 3)
                 self.botoes[1].set_position((Menu.janela.width - self.botoes[1].width) / 2, (Menu.janela.height - self.botoes[1].height) * 2 / 3)
                 self.hover_b4 = False
-                print(self.hover_b4)
         # Retorno padrão (sem clicar em nenhum botao)
         return False
 

@@ -5,9 +5,10 @@ from hud import *
 
 class Cafe(Item):
     vel_init = timer = 0
+    t_efeito = 10000 # Tempo de efeito do café
     ativo = False
-    def __init__(self, x, y):
-        Item.__init__(self, "../sprites/cafe.png", x, y)
+    def __init__(self, x, y, plataforma):
+        Item.__init__(self, "../sprites/cafe.png", x, y, plataforma)
 
     def efeito(self, jogador):
         # Se já não houver um café ativo
@@ -22,18 +23,19 @@ class Cafe(Item):
         Cafe.timer = Movel.janela.time_elapsed()
 
 class Lapis(Item):
-    def __init__(self, x, y):
-        Item.__init__(self, "../sprites/lapis.png", x, y)
+    def __init__(self, x, y, plataforma):
+        Item.__init__(self, "../sprites/lapis.png", x, y, plataforma)
 
     def efeito(self, jogador):
         HUD.count_lapis += 1
 
 class Caneta(Item):
     timer = 0
+    t_efeito = 10000
     ativo = False
 
-    def __init__(self, x, y):
-        Item.__init__(self, "../sprites/caneta.png", x, y)
+    def __init__(self, x, y, plataforma):
+        Item.__init__(self, "../sprites/caneta.png", x, y, plataforma)
 
     def efeito(self, jogador):
         # Se não houver uma caneta ativa
@@ -50,8 +52,7 @@ class Caneta(Item):
 class Borracha(Item):
 
     def __init__(self, x, y, plataforma):
-        Item.__init__(self, "../sprites/borracha.png", x, y)
-        self.plataforma = plataforma
+        Item.__init__(self, "../sprites/borracha.png", x, y, plataforma)
         self.ativo = True
 
     def efeito(self, jogador):
@@ -75,6 +76,8 @@ class Borracha(Item):
 
 
         self.x -= (Movel.x_vel + self.x_vel) * Movel.janela.delta_time()
+        self.y += self.plataforma.y_vel * Movel.janela.delta_time()
+
 
     # Substitui a função da classe Movel
     def colisao(self, obj):
@@ -84,21 +87,38 @@ class Borracha(Item):
         else:
             return False
 
+
+# Herda as funções da classe Movel
+class Plataforma(Movel):
+    max_width = 1280
+
+    def __init__(self, pos_y, pos_x = max_width, img_file = "../sprites/plataforma.jpg", width = max_width):
+        Movel.__init__(self, img_file)
+        self.set_position(pos_x, (Movel.janela.height * (13 - pos_y * 2) / 14)) # Plataforma.janela.width
+        self.width = width
+        self.y_vel = 0
+        self.deleted = False
+
+    def mover(self):
+        self.x -= Movel.x_vel * Movel.janela.delta_time()
+
+
 class Pontilhada(Plataforma):
     max_width = 174
     jogador = None
+    gravidade = 1000
+    g_delay = 300
 
     def __init__(self, pos_y, width = max_width):
         Plataforma.__init__(self, pos_y, img_file = "../sprites/pontilhada.png", width = width)
         self.collided = False
-        self.y_vel = 0
         self.timer = 0
 
     def mover(self):
         self.x -= Movel.x_vel * Movel.janela.delta_time()
         if self.collided and self.timer > 0:
-            if Movel.janela.time_elapsed() - self.timer > 300:
-                self.y_vel += 2000 * Movel.janela.delta_time()
+            if Movel.janela.time_elapsed() - self.timer > Pontilhada.g_delay:
+                self.y_vel += Pontilhada.gravidade * Movel.janela.delta_time()
                 self.y += self.y_vel * Movel.janela.delta_time()
 
     # Controle de colisão
