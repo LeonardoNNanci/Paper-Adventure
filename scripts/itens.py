@@ -62,7 +62,6 @@ class Borracha(Item):
             self.ativo = False
             if HUD.count_lapis < 0:
                 print("Morte por: Borracha")
-                sys.exit()
 
     def mover(self):
         # Se estiver na extremidade esquerda
@@ -104,7 +103,7 @@ class Plataforma(Movel):
 
 
 class Pontilhada(Plataforma):
-    max_width = 174
+    max_width = 1280
     jogador = None
     gravidade = 1000
     g_delay = 300
