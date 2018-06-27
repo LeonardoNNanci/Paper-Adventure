@@ -98,12 +98,3 @@ class Player():
             self.y_vel += self.gravidade * Player.janela.delta_time()
         self.controler.y += self.y_vel * Player.janela.delta_time()
         self.cur_sprt.y += self.y_vel * Player.janela.delta_time()
-
-
-    # Controle de game over
-    def controle_morte(self):
-        # Se sair para baixo da tela
-        if self.cur_sprt.y > Player.janela.height:
-            # Fecha o jogo
-            print("Morte por: Queda")
-            sys.exit()

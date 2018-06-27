@@ -11,7 +11,6 @@ class Menu():
         self.botoes = []
         # Variavel auxiliar
         self.hover_b4 = False
-
         self.alpha = GameImage("../sprites/alpha.png")
         self.papel = Sprite("../sprites/post-it.png")
         self.botoes.append(Sprite("../sprites/resume.png")) # Adiciona os botoes à lista
@@ -31,7 +30,7 @@ class Menu():
                 self.hover_b4 = True
             # Se clicar no botão:
             if Menu.mouse.is_button_pressed(1):
-                return True
+                return 0
 
         # Se o cursor estiver sobre o botão "Sair"
         elif Menu.mouse.is_over_object(self.botoes[1]):
@@ -42,7 +41,7 @@ class Menu():
                 self.hover_b4 = True
             # Se clicar no botão:
             if Menu.mouse.is_button_pressed(1):
-                sys.exit() # Fecha o jogo
+                return 1
         # Se não estiver sobre nenhum botão
         else:
             if self.hover_b4:
@@ -53,7 +52,7 @@ class Menu():
                 self.botoes[1].set_position((Menu.janela.width - self.botoes[1].width) / 2, (Menu.janela.height - self.botoes[1].height) * 2 / 3)
                 self.hover_b4 = False
         # Retorno padrão (sem clicar em nenhum botao)
-        return False
+        return 2
 
 
     # Chama as funções da classe e desenha o que for necessário
